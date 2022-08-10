@@ -45,7 +45,7 @@ $ Run tests on MNIST:
     To run experiment in batch, please refer scripts/run_all_cifarnet.sh
  
  # Citaton
- 
+``` 
 @InProceedings{pmlr-v162-yu22f,
   title = 	 {The Combinatorial Brain Surgeon: Pruning Weights That Cancel One Another in Neural Networks},
   author =       {Yu, Xin and Serra, Thiago and Ramalingam, Srikumar and Zhe, Shandian},
@@ -53,3 +53,4 @@ $ Run tests on MNIST:
   pages = 	 {25668--25683},
   year = 	 {2022}
 }
+```
