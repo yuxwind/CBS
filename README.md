@@ -11,7 +11,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     mkdir prob_regressor_data
     mkdir prob_regressor_results
 
-$ Run tests on MNIST:
+# Run tests on MNIST:
     4.1 Run on woodfisher firstly. This will sample data and dump their gradients to './prob_regressor_data' for future usage.
         sh scripts/sweep_mnist_mlpnet_woodfisher.sh 0.8 1 0  #0.8: target sparsity, 1: random seed for data sampling, 0: GPU ID
     
