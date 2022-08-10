@@ -1,17 +1,17 @@
 # CBS
-Official Code of The Combinatorial Brain Surgeon: Pruning Weights That Cancel One Another in Neural Networks[ICML2022]
+Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel One Another in Neural Networks](https://proceedings.mlr.press/v162/yu22f/yu22f.pdf)[ICML2022]
 
-1. Setup the enviroment: 
+# Setup the enviroment: 
     conda create -n grasp python=3.6.13
     conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.2 -c pytorch
     sh setup.sh 
    
  
-2. Prepare data
+# Prepare data
     mkdir prob_regressor_data
     mkdir prob_regressor_results
 
-4. Run tests on MNIST:
+$ Run tests on MNIST:
     4.1 Run on woodfisher firstly. This will sample data and dump their gradients to './prob_regressor_data' for future usage.
         sh scripts/sweep_mnist_mlpnet_woodfisher.sh 0.8 1 0  #0.8: target sparsity, 1: random seed for data sampling, 0: GPU ID
     
@@ -44,3 +44,12 @@ Official Code of The Combinatorial Brain Surgeon: Pruning Weights That Cancel On
        
     To run experiment in batch, please refer scripts/run_all_cifarnet.sh
  
+ # Citaton
+ 
+@InProceedings{pmlr-v162-yu22f,
+  title = 	 {The Combinatorial Brain Surgeon: Pruning Weights That Cancel One Another in Neural Networks},
+  author =       {Yu, Xin and Serra, Thiago and Ramalingam, Srikumar and Zhe, Shandian},
+  booktitle = 	 {Proceedings of the 39th International Conference on Machine Learning},
+  pages = 	 {25668--25683},
+  year = 	 {2022}
+}
