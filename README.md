@@ -56,7 +56,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
 
 4. Run CBS on other network architectures:
 
-    Similarly, we provides the scripts used in our paper for ResNet20, CIFARNet, MobileNet as below. In the paper, we report the average of 5 runs of experiemnts with seeds from 0 to 4. You can change the seed when running the following experiments. If you are interested in the ablation study experiments, you can also find their scripts in ./scripts folder.
+    Similarly, we provides the scripts used in our paper for ResNet20, CIFARNet, MobileNet as below. In the paper, we report the average performance of 5 runs of each experiemnt with seeds from 0 to 4. You can change the seed parameter when running the following experiments. If you are interested in the ablation study experiments, you can also find their scripts in ./scripts folder.
 
     ```
     ## on ResNet20
