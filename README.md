@@ -13,7 +13,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     mkdir prob_regressor_results
     mkdir checkpoints
     ```
-    Please download checkpoints from [here](https://drive.google.com/drive/folders/18ix239cy261ug_IGZbhtYKPzkkniTyee?usp=sharing). 
+    Please download checkpoints from [here](https://drive.google.com/drive/folders/18ix239cy261ug_IGZbhtYKPzkkniTyee?usp=sharing) and put them in the "checkpoints" folder. 
 
 3. Run CBS on MLPNet:
 
