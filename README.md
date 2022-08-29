@@ -41,7 +41,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
 
     Please check the explaination of the above hyperparameters in Algorithm1 of the [main paper](https://proceedings.mlr.press/v162/yu22f/yu22f.pdf).
 
-    3.3 Run our combinatorial weight update (CBS-U):
+    3.3 Run the combinatorial weight update (CBS-U):
     ```
         sh scripts/mnist-mlpnet-backbone_layers-fullfisher_fisher-greedy_magperb-update_rm_multiple.sh 0.8 1e-4 10 20  ${greedy_result_path} 0 0 test
         # 0.8: target sparsity
