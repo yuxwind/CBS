@@ -67,7 +67,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     # Get the gradients and Hessian inverse matrix
     scripts/sweep_cifar10_resnet20_woodfisherblock.sh 0.8 0 0 test
     # CBS-S (RMP + LS): 
-    sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_magperb_all_layers.sh 0.8 1e-4 10 20 1 0test 
+    sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_magperb_all_layers.sh 0.8 1e-4 10 20 1 0 test 
     # Note, you can also try CBS-S using only LS. 
     sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers.sh  0.8 1e-4 10 20 0 0 test
     # CSB-U 
