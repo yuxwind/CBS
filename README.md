@@ -85,11 +85,11 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     
     ## on MobleNet
     # Get the gradients and Hessian inverse matrix
-    sh imagenet-mobilenet-backbone_layers-mag.sh 0.95 1 0
+    sh scripts/imagenet-mobilenet-backbone_layers-mag.sh 0.95 1 0
     # CBS-S (RMP + LS): 
-    sh imagenet-mobilenet-backbone_layers-blockwise_fisher-greedy_online_magperb_all_layers.sh 0.5 1e-4 10 20 0 0 test
+    sh scripts/imagenet-mobilenet-backbone_layers-blockwise_fisher-greedy_online_magperb_all_layers.sh 0.5 1e-4 10 20 0 0 test
     # Note, you can also try CBS-S using only LS. 
-    sh imagenet-mobilenet-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers.sh 0.5 1e-4 10 20 0 0 test
+    sh scripts/imagenet-mobilenet-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers.sh 0.5 1e-4 10 20 0 0 test
     # CSB-U   
     sh scripts/imagenet-mobilenet-backbone_layers-blockwise_fisher-greedy_mag-update_rm_multiple.sh 0.5 1e-4 10 20 ${greedy_result_path} 0 0 test
     ``` 
