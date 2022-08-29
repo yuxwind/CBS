@@ -20,7 +20,10 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     3.1 Run on woodfisher firstly. This will sample data and dump their gradients and Hessien inverse matrix to './prob_regressor_data' for future usage.
         
     ```
-        sh scripts/sweep_mnist_mlpnet_woodfisher.sh 0.95 1 0  #0.95: target sparsity, 1: random seed for data sampling, 0: GPU ID
+        sh scripts/sweep_mnist_mlpnet_woodfisher.sh 0.95 1 0  
+        # 0.95: target sparsity
+        # 1: random seed for data sampling
+        # 0: GPU ID
     ```
     We also provide the dumped gradients and Hessien inverse files at [here](https://drive.google.com/drive/folders/1utO0xasvMyzIRrXSHhtp_kwBR9mKVKhD?usp=sharing). You may download them and skip this step.   
  
