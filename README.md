@@ -16,6 +16,7 @@ Official Code of The Combinatorial Brain Surgeon: Pruning Weights That Cancel On
     Please download checkpoints from [here](https://drive.google.com/drive/folders/18ix239cy261ug_IGZbhtYKPzkkniTyee?usp=sharing). 
 
 3. Run CBS on MLPNet:
+
     3.1 Run on woodfisher firstly. This will sample data and dump their gradients and Hessien inverse matrix to './prob_regressor_data' for future usage.
         
     ```
@@ -54,6 +55,7 @@ Official Code of The Combinatorial Brain Surgeon: Pruning Weights That Cancel On
     To run experiment in batch, please refer scripts/run_all_cifarnet.sh
 
 4. Run CBS on other network architectures:
+
     Similarly, we provides the scripts used in our paper for ResNet20, CIFARNet, MobileNet. In our paper, the reported results are based on the average of 5 runs with seeds from 0 to 4. We list the scripts for the models respectively as below. If you are interested in the ablation study experiments, you can also find their scripts in ./scripts folder.
 
     ```
@@ -88,7 +90,7 @@ Official Code of The Combinatorial Brain Surgeon: Pruning Weights That Cancel On
     sh scripts/imagenet-mobilenet-backbone_layers-blockwise_fisher-greedy_mag-update_rm_multiple.sh 0.5 1e-4 10 20 ${greedy_path} 0 0 test
     ``` 
 
-# Citaton
+## Citaton
 We thanks Singh & Alistarh for sharing their code of [WoodFisher](https://github.com/IST-DASLab/WoodFisher). Our implementation is based on great work on the code. If our CBS work is helpful to your research/project, please cite our work as below.
 
 ``` 
