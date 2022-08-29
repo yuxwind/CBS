@@ -12,8 +12,9 @@ Official Code of The Combinatorial Brain Surgeon: Pruning Weights That Cancel On
     mkdir prob_regressor_data
     mkdir prob_regressor_results
     mkdir checkpoints
-    # Please download checkpoints from [here](https://drive.google.com/drive/folders/18ix239cy261ug_IGZbhtYKPzkkniTyee?usp=sharing). 
     ```
+    Please download checkpoints from [here](https://drive.google.com/drive/folders/18ix239cy261ug_IGZbhtYKPzkkniTyee?usp=sharing). 
+
 3. Run CBS on MLPNet:
     3.1 Run on woodfisher firstly. This will sample data and dump their gradients and Hessien inverse matrix to './prob_regressor_data' for future usage.
         
