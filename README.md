@@ -22,7 +22,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     ```
         sh scripts/sweep_mnist_mlpnet_woodfisher.sh 0.95 1 0  #0.95: target sparsity, 1: random seed for data sampling, 0: GPU ID
     ```
-        We also provivde the dumped gradients and Hessien inverse files at [here](https://drive.google.com/drive/folders/1utO0xasvMyzIRrXSHhtp_kwBR9mKVKhD?usp=sharing). You may download them and skip this step.   
+    We also provivde the dumped gradients and Hessien inverse files at [here](https://drive.google.com/drive/folders/1utO0xasvMyzIRrXSHhtp_kwBR9mKVKhD?usp=sharing). You may download them and skip this step.   
  
     3.2 Run the proposed RMP + LS algorithm (CBS-S):
 
