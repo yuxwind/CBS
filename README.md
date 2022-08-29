@@ -1,5 +1,5 @@
 # CBS
-Official Code of The Combinatorial Brain Surgeon: Pruning Weights That Cancel One Another in Neural Networks[ICML2022]
+Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel One Another in Neural Networks](https://proceedings.mlr.press/v162/yu22f.html)[ICML2022]
 
 1. Setup the enviroment:
     ```
