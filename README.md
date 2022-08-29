@@ -91,7 +91,7 @@ Official Code of The Combinatorial Brain Surgeon: Pruning Weights That Cancel On
     ``` 
 
 ## Citaton
-We thanks Singh & Alistarh for sharing their code of [WoodFisher](https://github.com/IST-DASLab/WoodFisher). Our implementation is based on great work on the code. If our CBS work is helpful to your research/project, please cite our work as below.
+We thanks Singh & Alistarh for sharing their code of [WoodFisher](https://github.com/IST-DASLab/WoodFisher). Our implementation is based on their code. If our CBS work is helpful to your research/project, please cite our work as below.
 
 ``` 
 @InProceedings{pmlr-v162-yu22f,
