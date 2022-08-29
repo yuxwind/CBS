@@ -727,7 +727,7 @@ class Manager:
                 extra_dict['sample_losses'] = metas[0]['sample_losses']
             
             write_greedy_results(self.args, results_top1, results_top5, 
-                        updated_weight = metas[0]['updated_weight'],
+                        #updated_weight = metas[0]['updated_weight'],
                         extra_dict = extra_dict)
 
         get_flops(self.args, self.model)

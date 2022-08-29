@@ -205,7 +205,7 @@ class WoodburryFisherPruner(GradualPruner):
     def _compute_woodburry_fisher_inverse(self, dset, subset_inds, device, num_workers, debug=False):
         st_time = time.perf_counter()
         self._model = self._model.to(device)
-
+        
         print("in woodfisher: len of subset_inds is ", len(subset_inds))
 
         goal = self.args.fisher_subsample_size
@@ -238,6 +238,7 @@ class WoodburryFisherPruner(GradualPruner):
         
         stat_fisher_inv = []
         for in_tensor, target in dummy_loader:
+            self.grad_timer.start()
             self._release_grads()
 
             in_tensor, target = in_tensor.to(device), target.to(device)
@@ -248,6 +249,7 @@ class WoodburryFisherPruner(GradualPruner):
 
             ## compute grads, XX, yy
             sample_grads, _, gTw, w = self._compute_sample_fisher(loss, return_outer_product=False)
+            self.grad_timer.stop()
             #XXs.append(sample_grads[None,:].detach().cpu().numpy())
             #yys.append(gTw[None,None].detach().cpu().numpy())
             w = w.detach().cpu().numpy()
@@ -346,7 +348,7 @@ class WoodburryFisherPruner(GradualPruner):
         self._fisher_inv_diag = self._fisher_inv.diagonal()
 
         end_time = time.perf_counter()
-        print("Time taken to compute fisher inverse with woodburry is {} seconds".format(str(end_time - st_time)))
+        print("Time taken to Fisher_inverse with woodburry is {} seconds".format(str(end_time - st_time)))
 
         if self.args.dump_fisher_inv_mat:
             dump_tensor_to_mat(self._fisher_inv.diagonal(), self.args.run_dir, 'fisher_inv_diag.mat', 'fisher_inv_diag')
@@ -377,7 +379,10 @@ class WoodburryFisherPruner(GradualPruner):
             self._all_grads = []
         if not hasattr(self, '_param_stats'):
             self._param_stats = []
-	
+        
+        inv_timer = Timer('Fisher_inv')
+        wf_timer   = Timer('WF')
+        self.grad_timer = Timer('Gradients')
 
         self._fisher_inv = None
         #############################################################
@@ -385,7 +390,9 @@ class WoodburryFisherPruner(GradualPruner):
         self._load_all_grads(device)
         self._load_fisher_inv()
         if len(self._all_grads)==0 and  self._fisher_inv is None: 
+            inv_timer.start()
             pruning_time = self._compute_woodburry_fisher_inverse(dset, subset_inds, device, num_workers)
+            inv_timer.stop()
             self._all_grads = torch.stack(self._all_grads)
             self._dump_all_grads()
             self._dump_fisher_inv()
@@ -408,8 +415,8 @@ class WoodburryFisherPruner(GradualPruner):
         module_param_indices_list = []
         prune_masks = []
         past_weight_masks = []
-        timer = Timer()
-        timer.start()
+        
+        wf_timer.start()
         #############################################################
         # Step 2. Get param stats and either jointly or independently create sparsification masks!
 
@@ -472,7 +479,7 @@ class WoodburryFisherPruner(GradualPruner):
             #del self._param_stats
             del global_param_mask
 
-        pruning_time += timer.stop('calculate the mask in woodfisher')
+        #pruning_time += timer.stop('calculate the mask in woodfisher')
         #############################################################
         # Step 3. Now that sparsification masks have been computed whether jointly or independently,
         # put them together in a list, and apply the requisite OBS update to other remaining weights
@@ -495,7 +502,7 @@ class WoodburryFisherPruner(GradualPruner):
         # compute the weight update across all modules
         scaled_basis_vector = self._get_pruned_wts_scaled_basis(flat_pruned_weights_list, flat_module_weights_list)
         weight_updates = self._fisher_inv @ scaled_basis_vector
-        pruning_time += timer.stop('calculate weight_updates')
+        #pruning_time += timer.stop('calculate weight_updates')
         if self._prune_direction:
             meta['prune_direction'] = []
             meta['original_param'] = []
@@ -559,6 +566,15 @@ class WoodburryFisherPruner(GradualPruner):
             if self._prune_direction:
                 print(f'weights in meta[original_param][{idx}] after pruning (only for pruned) are ',
                       meta['original_param'][idx])
+
+        wf_timer.stop()
+        inv_timer.info('Fisher Inverse (with Gradients)')
+        wf_timer.info('WoodFisher (with Gradients and fisher_inv)')
+        self.grad_timer.info('Gradients')
+        wf_time = wf_timer.sum - inv_timer.sum
+        print(f'Time taken to Fisher_inv (without gradients) is {inv_timer.sum - self.grad_timer.sum:.2f} seconds')
+        print(f'Time taken to WF (without gradients and fisher_inv) is {wf_time:.2f} seconds')
+        
 
         self._release_grads()
         new_w = weight_updates + self._old_weights

@@ -78,10 +78,18 @@ class TrainingPolicy(PolicyBase):
             self.training_criterion = F.cross_entropy
 
     def eval_model(self, loader, device, epoch_num):
+        ### for calculating the imbance 
+        #from utils.cifar10_log import cifar10_log
+
         self.model.eval()
         eval_loss = 0
         correct = 0
         correctK = 0
+
+        ### for calculating the imbance 
+        #gt_all  = torch.zeros(len(loader.dataset))
+        #out_all = torch.zeros([len(loader.dataset),10])
+        #cnt = 0
         with torch.no_grad():
             for in_tensor, target in loader:
                 in_tensor, target = in_tensor.to(device), target.to(device)
@@ -91,6 +99,18 @@ class TrainingPolicy(PolicyBase):
                 correct += pred.eq(target.view_as(pred)).sum().item()
                 acc1, acck = _accuracy(None, output, target, is_top5=True)
                 correctK += acck
+               
+                ### for calculating the imbance 
+                #n = len(target)
+                #gt_all[cnt:cnt+n]  = target.cpu()
+                #out_all[cnt:cnt+n] = output.cpu()
+                #cnt += n
+
+        ### for calculating the imbance 
+        #if len(loader.dataset) == 10000: # this is for test dataset on cifar10
+        #    print('acc1', acc1)
+        #    compr_ratio = 0.1 
+        #    cifar10_log(compr_ratio, gt_all, out_all)	
         eval_loss /= len(loader.dataset)
         return eval_loss, correct, correctK
 

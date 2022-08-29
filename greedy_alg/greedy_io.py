@@ -62,6 +62,12 @@ def write_greedy_results(args, results_top1, results_top5, updated_weight=False,
     #evals['best_iter'] = itr
 
     _dump(eval_path, evals)
+    print("\n")
+    print('##################################################################')
+    print(f'Saved the greedy results (weight masks) at gredy_path: \n\t{greedy_path}')
+    print(f'Saved the evaluation results at eval_path: \n\t{eval_path}')
+    print('##################################################################')
+    print('\n')
 
 def extract_greedy_cfg(greedy_path):
     name = os.path.basename(greedy_path)
@@ -86,7 +92,7 @@ def extract_greedy_exp_cfgs(greedy_dir):
     return sparsity,thresholds,ranges,max_no_matches
 
 def get_greedy_exp_name(sparsity, threshold, arange,  max_no_match):
-    return f'sparsity{sparsity}_T{threshold:.2e}_Range{arange:d}_NOMATCH{max_no_match}'
+    return f'sparsity{sparsity:.2f}_T{threshold:.2e}_Range{arange:d}_NOMATCH{max_no_match}'
 
 def get_greedy_exp_name_with_mag(sparsity, threshold, arange,  max_no_match):
     return get_greedy_exp_name(sparsity, threshold, arange,  max_no_match) + '-magnitude.npy'

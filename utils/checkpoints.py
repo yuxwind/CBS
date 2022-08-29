@@ -1,4 +1,5 @@
 import os
+import re
 import errno
 import torch
 import shutil
@@ -160,22 +161,27 @@ def update_from_old_fashioned_checkpoint(state_dict, checkpoint_dict):
         else:
             subname = key
             firstname = ''
-
         if len(subname.split('.')) == 4 or len(subname.split('.')) == 3:
             subname = subname.replace('._layer', '')
         elif len(subname.split('.')) != 2:
             raise NotImplementedError
-
-        assert len(subname.split('.')) == 2
-        # assume the previous checkpoints has format like fc1.weight
-        layer, param_type = subname.split('.')
+        
+        # for vgg16 in models/VGG.py, layers are named as features.0
+        if re.match('features\.(\d+)\.', subname):
+            name_pieces = subname.split('.')
+            layer, param_type = ".".join(name_pieces[:2]), name_pieces[2]
+        else:
+            assert len(subname.split('.')) == 2
+            # assume the previous checkpoints has format like fc1.weight
+            layer, param_type = subname.split('.')
         if subname in processed_keys:
             print("repeated, are they same?", (checkpoint_dict[processed_keys[subname]] == checkpoint_dict[key]).all())
             assert (checkpoint_dict[processed_keys[subname]] == checkpoint_dict[key]).all()
         else:
             processed_keys[subname] = key
-
-        if 'mask' in key:
+        is_masked_layer = layer + '._weight_mask' in state_dict 
+        #if 'mask' in key:
+        if 'mask' in key or not is_masked_layer:
             final_name = layer + '.' + param_type
         else:
             final_name = layer + '._layer.' + param_type
@@ -206,7 +212,7 @@ def update_from_dan_checkpoint(state_dict, checkpoint_dict):
                 if name_pieces[idx] == 'weight' or name_pieces[idx] == 'bias':
                     break
                 idx += 1
-
+            import pdb;pdb.set_trace()
             if idx == len(name_pieces):
                 print(f"parameter with name: {key} does not exist in the model")
             else:
@@ -225,6 +231,7 @@ def update_from_dan_checkpoint(state_dict, checkpoint_dict):
                         new_name = 'fc._layer.' + subname.split('.')[1]
                         print(f"Copy param {key} with shape {checkpoint_dict[key].shape} in checkpoint to {new_name}")
                     else:
+                        import pdb;pdb.set_trace()
                         print(f"parameter with name: {key} does not exist in the model")
 
 
@@ -299,6 +306,9 @@ def load_checkpoint(full_checkpoint_path: str, current_model_config=None, config
                     state_dict = checkpoint_dict['state_dict']
                 elif 'model_state_dict' in checkpoint_dict:
                     state_dict = checkpoint_dict['model_state_dict']
+                elif '.pth' in full_checkpoint_path:
+                    #the .pth file only store state_dict, not including the other configs like 'epoch'
+                    state_dict = checkpoint_dict
                 else:
                     raise NotImplementedError
         ##TODO: what does old_fashioned mean?

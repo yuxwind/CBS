@@ -10,6 +10,7 @@ import math
 import pickle
 import os
 from common.io import _dump, _load, mkdir, mkdir_of_path
+from common.timer import Timer
 
 class BlockwiseWoodburryFisherPruner(GradualPruner):
     def __init__(self, model, inp_args, **kwargs):
@@ -159,7 +160,6 @@ class BlockwiseWoodburryFisherPruner(GradualPruner):
         logging.info("computing all grads for blockwise woodfisher: len of subset_inds is {}".format(len(subset_inds)))
 
         self._goal = self.args.fisher_subsample_size
-
         if self.args.max_mini_bsz is not None:
             assert len(subset_inds) == self._goal * int(
                 math.ceil(self._fisher_mini_bsz / self.args.max_mini_bsz)) * self.args.max_mini_bsz
@@ -475,7 +475,6 @@ class BlockwiseWoodburryFisherPruner(GradualPruner):
             #import pdb;pdb.set_trace()
             _dump(layer_fisher_inv_dict_path, layer_fisher_inv_dict)
 
-
             #with open(layer_fisher_inv_dict_path, 'wb') as f_:
             #    pickle.dump(layer_fisher_inv_dict, f_, pickle.HIGHEST_PROTOCOL)
 
@@ -618,15 +617,19 @@ class BlockwiseWoodburryFisherPruner(GradualPruner):
         ## Only to debug the weight update code in greedyblock.py
         #delta_w = self._debug_update_w_with_comb(desired_level)
 
+        grad_timer = Timer('Gradients')
+        wf_timer  = Timer('WF (with fisher_inv)')
+        inv_timer = Timer('Fisher_inv')
         #############################################################
         # Step0: compute all grads!
         #import pdb;pdb.set_trace()
         self._load_all_grads(device)
         if self._all_grads is None:
+            grad_timer.start()
             self._compute_all_grads(dset, subset_inds, device, num_workers)
             #import pdb;pdb.set_trace()
             self._dump_all_grads()
-
+            grad_timer.stop()
         # Step0.5: organize all grads into a dic!
         self._organize_grads()
         self._release_grads()
@@ -648,14 +651,16 @@ class BlockwiseWoodburryFisherPruner(GradualPruner):
 
         #############################################################
         # Step1: compute blockwise woodfisher inverse!
-
+        wf_timer.start()
         for idx, module in enumerate(self._modules):
             #import pdb;pdb.set_trace()
             self._load_fisher_inv(device, idx, self._param_idx)
             #import pdb;pdb.set_trace()
             if self._param_idx not in self._block_fisher_inv_dic:
+                inv_timer.start()
                 self._compute_block_woodburry_fisher_inverse(module.weight, self._param_idx, device)
                 self._dump_fisher_inv(idx, self._param_idx)
+                inv_timer.stop()
             #import pdb;pdb.set_trace()
             #layer_fisher_inv_dict = {'layer_start': self._param_idx, 
             #                 'f_inv': self._block_fisher_inv_dic[self._param_idx]}
@@ -676,7 +681,6 @@ class BlockwiseWoodburryFisherPruner(GradualPruner):
                 w_stat = self._get_param_stat(module.weight, module.weight_mask,
                                               self._block_fisher_inv_diag_dic[self._param_idx],
                                               subtract_min=self.args.subtract_min, flop_stat=flop_stat)
-
             if not self.args.woodburry_joint_sparsify:
                 assert self._weight_only
                 weight_mask_before = module.weight_mask
@@ -702,7 +706,6 @@ class BlockwiseWoodburryFisherPruner(GradualPruner):
                 weight_update = self._get_weight_update(self._param_idx, scaled_basis_vector, idx)
                 weight_update = weight_update.view_as(module.weight).to(module.weight.device)
                 logging.info(f'at idx {idx} named {self._module_names[idx]}, shape of weight update is {list(weight_update.shape)}')
-
                 if self._zero_after_prune:
 
                     # This flag is used in case when analyze the loss approximation due to pruning.
@@ -759,16 +762,17 @@ class BlockwiseWoodburryFisherPruner(GradualPruner):
                 self._param_stats.append(w_stat.flatten())
 
             self._param_idx += module.weight.numel()
-
+            
             if module.bias is not None and not self._weight_only:
+                inv_timer.start()
                 logging.info('sparsifying bias as well')
                 self._compute_block_woodburry_fisher_inverse(module.bias, self._param_idx, device)
+                inv_timer.stop()
                 assert self.args.flops_power <= 0 # PR: flop_based statistic not implemented for bias yet
                 b_stat = self._get_param_stat(module.bias, module.bias_mask,
                                               self._block_fisher_inv_diag_dic[self._param_idx].to(module.bias.device), subtract_min=self.args.subtract_min)
                 self._param_stats.append(b_stat.flatten())
                 self._param_idx += module.bias.numel()
-
 
         
             
@@ -907,7 +911,7 @@ class BlockwiseWoodburryFisherPruner(GradualPruner):
 
             assert self._param_idx == _param_count
                 
-
+        wf_timer.stop()
         # check if all the params whose fisher inverse was computed their value has been taken
         # print(f'param_idx is {self._param_idx} and fisher_inv_shape[0] is {len(self._all_grads[0])} \n')
         assert self._param_idx == self._total_block_fisher_params
@@ -915,6 +919,12 @@ class BlockwiseWoodburryFisherPruner(GradualPruner):
 
         del self._block_fisher_inv_diag_dic
         del self._block_fisher_inv_dic
+        
+        grad_timer.info('Gradients')
+        inv_timer.info('fisher_inv')
+        wf_timer.info('WF (with fisher_inv)')
+        wf_time = wf_timer.sum - inv_timer.sum
+        print(f'Time taken to WF (without Gradients and fisher_inv) is {wf_time:.2f} seconeds')
 
         if self._inspect_inv:
             meta['inspect_dic'] = self.inspect_dic

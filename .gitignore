@@ -1,3 +1,5 @@
 tests
 checkpoints
+code-snapshot/
 scripts
+__pycache__

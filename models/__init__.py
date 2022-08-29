@@ -18,11 +18,14 @@ from models.resnet_dpf import *
 from models.mlpnet import *
 from models.cifarnet import *
 
+from models.resnet18_cifar import resnet18
+from models.VGG import VGG16
+
 from torchvision.models import resnet50 as torch_resnet50
 from torchvision.models import vgg16_bn, vgg19
 from torchvision.models import vgg11, vgg11_bn, inception_v3
 
-CIFAR10_MODELS = ['resnet20', 'resnet32', 'resnet44', 'resnet56', 'resnet20_sw', 'resnet32_sw', 'resnet44_sw', 'resnet56_sw', 'resnet20_mixed', 'cifarnet']
+CIFAR10_MODELS = ['vgg16', 'resnet18', 'resnet20', 'resnet32', 'resnet44', 'resnet56', 'resnet20_sw', 'resnet32_sw', 'resnet44_sw', 'resnet56_sw', 'resnet20_mixed', 'cifarnet']
 IMAGENET_MODELS = ['resnet18', 'resnet34', 'vgg19', 'resnet50', 'resnet101', 'resnet152', 'resnet50_mixed',
     'wide_resnet50_2_mixed', 'mobilenet', 'mobilenet_v2', 'resnet_dpf', 'inception_v3', 'mobilenet_v1_dropout']
 
@@ -31,6 +34,8 @@ def get_model(name, dataset, pretrained=False, use_butterfly=False,
     if name.startswith('resnet') and dataset == 'cifar10':
         if name == 'resnet50' and pretrained:
             return torch_resnet50(pretrained=True)
+        if name == 'resnet18' and dataset == 'cifar10':
+            return resnet18()
         try:
             if 'mixed' in name:
                 assert_use_se(name, use_se)
@@ -58,6 +63,8 @@ def get_model(name, dataset, pretrained=False, use_butterfly=False,
             return globals()[name](pretrained)
         except:
             raise ValueError(f'Model {name} is not supported for {dataset}, list of supported: {", ".join(IMAGENET_MODELS)}')
+    if name == 'vgg16':
+        return VGG16()
     if name == 'cifarnet':
         return CIFARNet()
     if name == 'mlpnet':
