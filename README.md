@@ -37,7 +37,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
         # test: a flag to make the log of the experiment flush to stdin
     ```
        
-    This experiment will dump the result at {greedy_path}, which will be requred to run CBS-U. You can check {greedy_path} at the end of the experiment log.
+    This experiment will dump the result at {greedy_result_path}, which will be required when running CBS-U.  Please get {greedy_result_path} at the end of the experiment log.
 
     Please check the explaination of the above hyperparameters in Algorithm1 of the main paper.
 
@@ -68,7 +68,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     # Note, you can also try CBS-S using only LS. 
     sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers.sh  0.8 1e-4 10 20 0 0 test
     # CSB-U 
-    sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers-upate_rm_multiple.sh 0.8 1e-4 10 20 ${greedy_path} 0 0 test
+    sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers-upate_rm_multiple.sh 0.8 1e-4 10 20 ${greedy_result_path} 0 0 test
 
     ## on CIFARNET
     # Get the gradients and Hessian inverse matrix
@@ -78,7 +78,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     # Note, you can also try CBS-S using only LS. 
     # sh scripts/cifar10-cifarnet-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers.sh 0.95 1e-4 10 20 0 0 test
     # CSB-U    
-    sh scripts/cifar10-cifarnet-backbone_layers-blockwise_fisher-mag-update_rm_multiple.sh 0.95 1e-4 10 20 ${greedy_path} 0 0 test 
+    sh scripts/cifar10-cifarnet-backbone_layers-blockwise_fisher-mag-update_rm_multiple.sh 0.95 1e-4 10 20 ${greedy_result_path} 0 0 test 
     
     ## on MobleNet
     # Get the gradients and Hessian inverse matrix
@@ -88,7 +88,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     # Note, you can also try CBS-S using only LS. 
     sh imagenet-mobilenet-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers.sh 0.5 1e-4 10 20 0 0 test
     # CSB-U   
-    sh scripts/imagenet-mobilenet-backbone_layers-blockwise_fisher-greedy_mag-update_rm_multiple.sh 0.5 1e-4 10 20 ${greedy_path} 0 0 test
+    sh scripts/imagenet-mobilenet-backbone_layers-blockwise_fisher-greedy_mag-update_rm_multiple.sh 0.5 1e-4 10 20 ${greedy_result_path} 0 0 test
     ``` 
 
 ## Citaton
