@@ -4,8 +4,10 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
 1. Setup the enviroment:
     ```
     conda create -n cbs python=3.6.13
+    conda activate cbs
     conda install pytorch==1.5.0 torchvision==0.6.0 cudatoolkit=10.2 -c pytorch
     sh setup.sh
+    
     ```
 2. Prepare data
     ```
