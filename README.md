@@ -39,7 +39,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
        
     This experiment will dump the result at {greedy_result_path}, which will be required when running CBS-U. This path is printed out at the end of the experiemnt log. 
 
-    Please check the explaination of the above hyperparameters in Algorithm1 of the main paper.
+    Please check the explaination of the above hyperparameters in Algorithm1 of the [main paper](https://proceedings.mlr.press/v162/yu22f/yu22f.pdf).
 
     3.3 Run our combinatorial weight update (CBS-U):
     ```
