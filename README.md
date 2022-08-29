@@ -65,13 +65,13 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     ```
     ## on ResNet20
     # Get the gradients and Hessian inverse matrix
-    scripts/sweep_cifar10_resnet20_woodfisherblock.sh 0.8 0 0 test
+    scripts/sweep_cifar10_resnet20_woodfisherblock.sh 0.5 0 0 test
     # CBS-S (RMP + LS): 
-    sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_magperb_all_layers.sh 0.8 1e-4 10 20 0 0 test 
+    sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_magperb_all_layers.sh 0.5 1e-4 10 20 0 0 test 
     # Note, you can also try CBS-S using only LS. 
-    sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers.sh  0.8 1e-4 10 20 0 0 test
+    sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers.sh  0.5 1e-4 10 20 0 0 test
     # CSB-U 
-    sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers-upate_rm_multiple.sh 0.8 1e-4 10 20 ${greedy_result_path} 0 0 test
+    sh scripts/cifar10-resnet20-backbone_layers-blockwise_fisher-greedy_online_mag_all_layers-upate_rm_multiple.sh 0.5 1e-4 10 20 ${greedy_result_path} 0 0 test
 
     ## on CIFARNET
     # Get the gradients and Hessian inverse matrix
@@ -85,7 +85,7 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
     
     ## on MobleNet
     # Get the gradients and Hessian inverse matrix
-    sh scripts/imagenet-mobilenet-backbone_layers-mag.sh 0.95 1 0
+    sh scripts/imagenet-mobilenet-backbone_layers-mag.sh 0.5 1 0
     # CBS-S (RMP + LS): 
     sh scripts/imagenet-mobilenet-backbone_layers-blockwise_fisher-greedy_online_magperb_all_layers.sh 0.5 1e-4 10 20 0 0 test
     # Note, you can also try CBS-S using only LS. 
