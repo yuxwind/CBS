@@ -212,7 +212,6 @@ def update_from_dan_checkpoint(state_dict, checkpoint_dict):
                 if name_pieces[idx] == 'weight' or name_pieces[idx] == 'bias':
                     break
                 idx += 1
-            import pdb;pdb.set_trace()
             if idx == len(name_pieces):
                 print(f"parameter with name: {key} does not exist in the model")
             else:
