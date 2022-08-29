@@ -36,7 +36,8 @@ Official Code of [The Combinatorial Brain Surgeon: Pruning Weights That Cancel O
         # 0: GPU
         # test: a flag to make the log of the experiment flush to stdin
     ```
-        This experiment will dump the result at {greedy_path}, which will be requred to run CBS-U. You can check {greedy_path} at the end of the experiment log.
+       
+    This experiment will dump the result at {greedy_path}, which will be requred to run CBS-U. You can check {greedy_path} at the end of the experiment log.
 
     Please check the explaination of the above hyperparameters in Algorithm1 of the main paper.
 
