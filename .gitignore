@@ -1,5 +1,6 @@
 tests
 checkpoints
 code-snapshot/
-scripts
 __pycache__
+prob_regressor_data
+prob_regressor_results
