@@ -11,7 +11,7 @@
 # Exp of updating weights follows the online-greedy algirithm.
 # Use the same experiment name as the one to get greedy results
 ###############################################################
-greedy_path=$6
+greedy_path=$5
 DIR="$(dirname "$(dirname $greedy_path)" )"
 EXP_NAME="$(basename "$(dirname $DIR)")"
 script_name=${EXP_NAME}.sh
@@ -20,8 +20,8 @@ DATASET=mnist
 ARCH=mlpnet
 
 # if NOWDATE is passed by args, use it; otherwise tag this exp as a test 
-if [ "$#" -eq 9 ] && [ $9 != test ]; then
-    NOWDATE=$9
+if [ "$#" -eq 8 ] && [ $8 != test ]; then
+    NOWDATE=$8
     is_test=0
 else
     NOWDATE="test.$(date +%Y%m%d.%H_%M_%S)"
@@ -48,7 +48,8 @@ NOWDATE="update_w.multiple.${NOWDATE}"
 
 
 ID=0
-SEED=$7
+SEED=$6
+GPU=$7
 
 FISHER_SUBSAMPLE_SIZE=10000
 FISHER_MINI_BSZ=1
@@ -66,9 +67,7 @@ SPARSITY=$1
 THRESHOLD=$2
 RANGE=$3
 MAX_NO_MATCH=$4
-SCALE_PRUNE_UPDATE=$5
-GREEDY_PATH=$6
-GPU=$8
+SCALE_PRUNE_UPDATE=1
 args_update_weights="--update-weights"
 SWAP_FLAG="--not-swap-one-per-iter"
 N_FLUCTATION=5
